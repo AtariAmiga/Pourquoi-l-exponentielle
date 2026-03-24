@@ -1,0 +1,182 @@
+\documentclass[12pt]{article}
+
+\input{0a - preambule}
+
+\usepackage{pgfplotstable}
+\usepackage{pgfmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+
+\title{\textit{Pourquoi} l'exponentielle}
+\begin{document}
+
+\maketitle 
+
+\section{Jakob Bernoulli, 1654 - 1705}
+Que devient 1 Thaler (monnaie à l'époque en Suisse) placé à 100\% d’intérêt par an, si on capitalise de plus en plus souvent ?
+
+Si on capitalise :
+
+\begin{itemize}
+    \item une fois par an: $1 \text{ Thaler}\times (1 + 100\%) = (1 + 1) = 2  \text{ Thaler}$
+    \item deux fois par an: $1 \text{ Thaler} \times (1 + 50\%)(1 + 50\%) = 1 \times (1 + 50\%)^2 = (1 + \frac{1}{2})^2 = 2,25\text{ Thaler} $
+    \item trois fois par an: $1 \times (1 + \frac{100\%}{3})^3 = (1 + \frac{1}{3})^3$
+    \item n fois par an: $1 \times (1 + \frac{100\%}{n})^n = (1 + \frac{1}{n})^n$
+\end{itemize}
+
+Et si on capitalise en continu?
+\begin{itemize}
+    \item 1 Thaler: $\lim_{n\to\infty}(1+\frac{1}{n})^n$
+    \item $x$ Thaler: $\lim_{n\to\infty}(1+\frac{x}{n})^n$
+\end{itemize}
+
+Bernouilli a ainsi approximé la valeur pour $x=1$. 
+
+On voit qu'elle converge rapidement:
+\input{convergence_bernouilli}
+
+\begin{gather*}
+    \lim_{n\to\infty}(1+\frac{1}{n})^n = \approx 2,718281828459045
+\end{gather*}
+
+Cette fonction a été nommée par la suite exponentielle:
+\begin{gather*}
+    e^x=\lim_{n\to\infty}(1+\frac{x}{n})^n
+\end{gather*}
+
+\paragraph{On remarque déjà que $(e^x)^{(n)}=e^x$}
+Soit
+\[
+f(x)=\left(1+\frac{x}{n}\right)^n
+\]
+
+On pose
+\[
+u(x)=1+\frac{x}{n}
+\]
+Alors
+\[
+f(x)=u(x)^n
+\]
+
+Par la règle de la chaîne,
+\[
+f'(x)=n\,u(x)^{\,n-1}\,u'(x).
+\]
+
+Or
+\[
+u'(x)=\frac{1}{n}
+\]
+
+Donc
+\[
+f'(x)=n\left(1+\frac{x}{n}\right)^{n-1}\cdot\frac{1}{n}
+=\left(1+\frac{x}{n}\right)^{n-1}
+\]
+
+Ainsi,
+\[
+\boxed{
+\frac{d}{dx}\left(1+\frac{x}{n}\right)^n
+=\left(1+\frac{x}{n}\right)^{n-1}
+}
+\]
+
+donc, lorsque n tend vers l'infini:
+\[
+    (e^x)'=e^x
+\]
+
+
+\section{Leonhard Euler 1707 - 1783}
+Il connaissait les séries de Taylor (Brooke Taylor 1685 - 1731) pour approximer les fonctions suffisamment dérivables autour d'un voisinage $a$:
+\begin{gather*}
+    f(x)=\sum_{n=0}^{\infty}\frac{f^{(n)}(a)}{n!}(x-a)^n
+\end{gather*}
+
+Comme $f^{(n)}(a)$ et $n!$ sont des constantes, on dérive seulement $(x-a)^n$
+
+\[
+f'(x)
+=\sum_{n=1}^{\infty}\frac{f^{(n)}(a)}{n!}\,n(x-a)^{n-1}
+\]
+
+\[
+f'(x)=\sum_{n=1}^{\infty}\frac{f^{(n)}(a)}{(n-1)!}(x-a)^{n-1}
+\]
+
+\[
+\text{En posant } k=n-1,\ \ f'(x)=\sum_{k=0}^{\infty}\frac{f^{(k+1)}(a)}{k!}(x-a)^k = f(x) \text{ si } f^{(k+1)} = f^{(k)}
+\]
+
+
+L'exponentielle est une fonction tellement régulière (son rayon de convergence est infini) que la formule de Taylor fonctionnera parfaitement quel que soit $a$.
+
+Lorsque $a$ = 0:
+\begin{gather*}
+    f(x)=\sum_{n=0}^{\infty}\frac{f^{(n)}(0)}{n!}x^n
+\end{gather*}
+
+Dans le cas de $e^x$, toutes ses dérivées sont égales: $e^x=(e^x)'=(e^x)''=...=(e^x)^{(n)}$
+
+Et pour $x=0$, elles valent toutes $1$. Autrement dit:
+\begin{gather*}
+    \forall n \in \mathbb{N^*}, \quad f^{(n)}(0)=1
+\end{gather*}
+
+D'où
+\begin{gather*}
+    e^x=\sum_{n=0}^{\infty}\frac{f^{(n)}(0)}{n!}x^n=\sum_{n=0}^{\infty}\frac{1}{n!}x^n \\
+    \boxed{e^x=\sum_{n=0}^\infty{\frac{x^n}{n!}}}
+\end{gather*}
+
+Illustration de la convergence de la série:
+\input{graphe_euler}
+
+Vérifions le. \\
+Pour rappel, $n!$, qui se prononce \textit{factorielle n}, est une fonction définie pour tout $n\in \mathbb{N}$ ainsi:
+
+\begin{gather*}
+    0!=1 \\
+    n!=1\times2\times3\times4\times5\times...(n-1)\times n
+\end{gather*}
+
+On peut aussi la définir récursivement par 
+\begin{gather*}
+    0!=1 \\
+    n!=n(n-1)!
+\end{gather*}
+ce qui va nous être utile par la suite.
+
+Prouvons que \textbf{DOUBLON? ou version 2 pour la pédagogie?}
+\begin{gather*}
+    e^x=f(x)=\sum_{n=0}^\infty{\frac{x^n}{n!}}
+\end{gather*}
+
+Pour rappel, $0^0 = 1$, car on ne multiplie aucune fois par $0$. On a donc:
+\begin{gather*}
+    f(0)=\sum_{n=0}^\infty{\frac{0^n}{n!}}=\frac{0^0}{0!}+\frac{0^1}{1!}+\frac{0^2}{2!}+... \\
+    \boxed{$f(0)=1$}
+\end{gather*}
+
+
+Prouvons maintenant que $f(x)=f'(x)$
+\begin{gather*}
+    f(x)=\sum_{n=0}^\infty{\frac{x^n}{n!}} \\
+    f(x)=\frac{x^0}{0!}+\frac{x^1}{1!}+\frac{x^2}{2!}+\frac{x^3}{3!}+...+\frac{x^n}{n!}+... \\
+\end{gather*}
+
+Développons $f(x)$ pour mieux comprendre ce qui va se passer lorsqu'on va dériver $f$:
+\begin{gather*}
+    f(x)=1+x+\frac{x^2}{1 \times2}+\frac{x^3}{1 \times2 \times3}+...+\frac{x^n}{1 \times2  \times3  \times ... \times n} \\
+    f'(x)=0+1+2\frac{x^{2-1}}{2!}+3\frac{x^{3-1}}{3!}+...+n\frac{x^{n-1}}{n!}+... \\
+    f'(x)=1+\frac{x^{1}}{1!}+\frac{x^{2}}{2!}+...+\frac{x^{n-1}}{(n-1)!}+...=f(x)
+\end{gather*}
+
+Lorsqu'on dérive $f$, on retombe sur la même fonction, tous les éléments sont simplement décalés d'un cran à gauche, mais puisqu'il y en a une infinité, rien n'a changé:
+
+Donc $\boxed{f'(x)=f(x)}$
+
+\end{document}

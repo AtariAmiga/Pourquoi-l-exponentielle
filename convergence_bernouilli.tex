@@ -1,0 +1,28 @@
+\def\x{1}   % mets 1 pour voir e, 0 donnerait une erreur nulle
+
+% --- Génération des données ---
+\pgfplotstablenew[
+    columns={n, val},
+    create on use/n/.style={
+        create col/expr={\pgfplotstablerow + 1}
+    },
+    create on use/val/.style={
+        create col/expr={(1+\x/(\pgfplotstablerow+1))^(\pgfplotstablerow+1)}
+    },
+]{100}\bernoulidata
+
+% --- Graphe montrant la convergence ---
+\begin{center}
+\begin{tikzpicture}
+    \begin{axis}
+        [
+            width=12cm, height=7cm,
+            xlabel={$n$},
+            ylabel={$\left(1+\frac{\x}{n}\right)^n$},
+            xmin=1, xmax=100,
+            grid=both,
+        ]
+        \addplot+[mark=*, mark size=1.2pt] table[x=n, y=val]{\bernoulidata};
+    \end{axis}
+\end{tikzpicture}
+\end{center}
